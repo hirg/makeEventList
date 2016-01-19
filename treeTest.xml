@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<job simulateSubmission="false" inputOrder="runnumber" softLimits="true" minEvents="10000" maxEvents="15000" fileListSyntax="xrootd">
+
+	<SandBox installer="ZIP">
+		<Package name="treeTest"> 
+		<File>file:./treeTest.C</File>
+		</Package>
+	</SandBox>
+
+	<stdout discard="true" />
+	<stderr URL="file:/gpfs/mnt/gpfs01/star/scratch/campbell/makePionDSTs/logs/treeTest$JOBID.err"/>
+
+    <input URL="catalog:star.bnl.gov?production=P11id,trgsetupname=AuAu200_production_2011,runnumber[]12162001-12171016,filetype=daq_reco_MuDst,filename~st_physics,storage!=HPSS"  nFiles="100" /> 
+
+	<Generator>
+		<Location>/gpfs/mnt/gpfs01/star/scratch/campbell/makePionDSTs/schedulerFiles/</Location>
+		<ReportLocation>/gpfs/mnt/gpfs01/star/scratch/campbell/makePionDSTs/schedulerFiles/</ReportLocation>
+	</Generator>
+
+	<command>
+		<!-- AuAu 200 GeV -->
+        starver SL11d
+		cons
+		root4star -q -b treeTest.C\(\"$FILELIST\",\"treeTest_$JOBID.root\",9999\)++ &gt;&amp; treeTest_${JOBID}.log
+        mv *root /gpfs/mnt/gpfs01/star/scratch/campbell/makePionDSTs/output/
+        mv *log /gpfs/mnt/gpfs01/star/scratch/campbell/makePionDSTs/logs/
+	</command>
+
+</job>
